@@ -14,6 +14,7 @@ class Attendee extends Model
         'role',
         'company_name',
         'qr',
+        'randomNum',
         // 'attend',
         // 'attended_time'
     ];

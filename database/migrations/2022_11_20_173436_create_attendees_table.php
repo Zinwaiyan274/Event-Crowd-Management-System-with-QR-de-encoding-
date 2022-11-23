@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('role');
             $table->string('company_name')->nullable();
             $table->string('qr');
+            $table->string('randomNum');
             // $table->boolean('attend');
             // $table->timestamp('attended_time');
             $table->timestamps();

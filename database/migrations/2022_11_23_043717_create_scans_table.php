@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('scans', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('randomNum');
+            $table->timestamp('attendedTime');
             $table->timestamps();
         });
     }

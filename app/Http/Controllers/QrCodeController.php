@@ -21,18 +21,18 @@ class QrCodeController extends Controller
 
     // generating process
     public function generateQr(Request $request){
-        // $userData = implode($this->requestDataWithoutQR($request));
-        $name = $request->name;
+        $randomNum = (string)uniqid();
+        // $time = Carbon::now()->format('g:i A');
 
         $qr = QrCode::format('png')
                         ->size(200)->errorCorrection('H')
                         ->backgroundColor(255, 255, 255)
-                        ->generate($name);
+                        ->generate($randomNum);
 
         $output_file = time() . '.png';
         Storage::disk('public')->put($output_file, $qr);
 
-        $data = $this->requestDataWithQR($request, $output_file);
+        $data = $this->requestDataWithQR($request, $output_file, $randomNum, $time);
 
         Attendee::create($data);
 
@@ -40,21 +40,14 @@ class QrCodeController extends Controller
     }
 
     // input data with qr code
-    private function requestDataWithQR($request, $output_file){
+    private function requestDataWithQR($request, $output_file, $randomNum, $time){
         return [
             'name' => $request->name,
             'role' => $request->role,
             'company_name' => $request->companyName,
             'qr' => $output_file,
+            'randomNum' => $randomNum,
+            'created_at' => Carbon::now(),
         ];
     }
-
-    // input data without qr code
-    // private function requestDataWithoutQR($request){
-    //     return [
-    //         'name' => $request->name,
-    //         'role' => $request->role,
-    //         'company_name' => $request->companyName,
-    //     ];
-    // }
 }
