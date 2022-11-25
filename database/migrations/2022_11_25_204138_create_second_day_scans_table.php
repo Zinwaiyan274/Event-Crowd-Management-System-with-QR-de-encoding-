@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('scans', function (Blueprint $table) {
+        Schema::create('second_day_scans', function (Blueprint $table) {
             $table->id();
             $table->string('randomNum');
             $table->timestamp('attendedTime');
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('scans');
+        Schema::dropIfExists('second_day_scans');
     }
 };

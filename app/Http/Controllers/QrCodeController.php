@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\Attendee;
@@ -22,7 +23,7 @@ class QrCodeController extends Controller
     // generating process
     public function generateQr(Request $request){
         $randomNum = (string)uniqid();
-        // $time = Carbon::now()->format('g:i A');
+        $time = Carbon::now()->format('h:i:s A');
 
         $qr = QrCode::format('png')
                         ->size(200)->errorCorrection('H')
@@ -47,7 +48,7 @@ class QrCodeController extends Controller
             'company_name' => $request->companyName,
             'qr' => $output_file,
             'randomNum' => $randomNum,
-            'created_at' => Carbon::now(),
+            'created_at' => $time,
         ];
     }
 }

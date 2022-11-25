@@ -1,16 +1,15 @@
 @extends('layout.app')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="col-6">
             <video src="" id="preview" width="100%"></video>
         </div>
-        <div class="col-6">
+        <div class="col-4">
             <form action="{{ route('scan') }}" method="post">
                 @csrf
-                <label for="">Scan Qr Code</label>
-                <input type="text" name="text" id="text" readonly="" placeholder="scan qrcode" class="form-control"> <br>
+                <input type="text" name="text" id="text" readonly="" placeholder="Value" class="form-control"> <br>
                 <button class="btn btn-outline-success" type="submit">Save</button>
             </form>
         </div>
@@ -25,7 +24,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Role</th>
                     <th scope="col">Company Name</th>
-                    <th scope="col">Attend</th>
+                    {{-- <th scope="col">Attend</th> --}}
                     <th scope="col">Attended Time</th>
                   </tr>
                 </thead>
@@ -36,8 +35,8 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->role }}</td>
                     <td>{{ $item->company_name }}</td>
-                    <td></td>
-                    <td>{{ $item->created_at }}</td>
+                    {{-- <td></td> --}}
+                    <td>{{ $item->created_at->format('Y-m-d h:i:s A') }}</td>
                   </tr>
                   @endforeach
                 </tbody>

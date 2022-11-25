@@ -54,7 +54,7 @@
                                         <div class="text-center">
                                             <h1>{{ $item->name }}</h1>
                                             <img src="{{ asset("storage/$item->qr") }}" width="200" alt="qr" class="mb-2"> <br>
-                                            <a href="{{ Storage::url($item->qr)}}" target="_blank" download class="text-decoration-none">Download</a>
+                                            <a href="{{ Storage::url($item->qr) }}" target="_blank" download class="text-decoration-none">Download</a>
                                         </div>
                                     @endforeach
                                     <div class="d-flex justify-content-center mt-3">

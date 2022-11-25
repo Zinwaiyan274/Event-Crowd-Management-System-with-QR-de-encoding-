@@ -12,26 +12,28 @@
     <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
 
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
+    <style>
+        .nav{
+            background-color: #b6abee;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-lg navbar-expand-lg navbar-light bg-light">
+    <nav class="nav navbar navbar-lg navbar-expand-lg">
         <!-- Container wrapper -->
         <div class="container-fluid">
-            <!-- Toggle button -->
-            {{-- <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarCenteredExample" aria-controls="navbarCenteredExample" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button> --}}
-
+            <div class="navbar-brand d-flex align-item-center" style="margin-left: 150px">
+                <img src="{{ asset("storage/Logo.svg") }}" alt="" width="70px">
+            </div>
             <!-- Collapsible wrapper -->
-            <div class="collapse navbar-collapse justify-content-center" id="navbarCenteredExample">
+            <div class="collapse navbar-collapse justify-content-end d-flex align-item-center" id="navbarCenteredExample" style="margin-right: 150px;">
             <!-- Left links -->
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link fs-3 " aria-current="page" href="{{ route('generatePage') }}">QR Page</a>
+                        <a class="nav-link fs-3 " aria-current="page" href="{{ route('generatePage') }}">Generate</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-3 " aria-current="page" href="{{ route('scannerPage') }}">Scanner</a>
+                        <a class="nav-link fs-3 " aria-current="page" href="{{ route('scannerPage') }}">Scan</a>
                     </li>
                 </ul>
             <!-- Left links -->

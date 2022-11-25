@@ -10,8 +10,8 @@ class ScannerController extends Controller
 {
     // scanner page
     public function scannerPage(){
-        $data = Attendee::select('attendees.*', 'scans.randomNum')
-                    ->join('scans', 'attendees.randomNum', 'scans.randomNum')
+        $data = Attendee::select('attendees.*', 'first_day_scans.randomNum')
+                    ->join('first_day_scans', 'attendees.randomNum', 'first_day_scans.randomNum')
                     ->get();
 
         return view('qr_scan')->with(['data' => $data]);
