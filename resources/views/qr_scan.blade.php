@@ -9,38 +9,23 @@
         <div class="col-4">
             <form action="{{ route('scan') }}" method="post">
                 @csrf
-                <input type="text" name="text" id="text" readonly="" placeholder="Value" class="form-control"> <br>
-                <button class="btn btn-outline-success" type="submit">Save</button>
+                <input type="text" name="text" id="text" readonly="" placeholder="Value" class="form-control">
+                <button class="btn btn-outline-success mt-2" type="submit">Save</button>
             </form>
         </div>
 
     </div>
-    <div class="row fs-4 mt-5">
+    <div class="row fs-4 mt-3">
         <div class="col">
-            <table class="table table-success table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Company Name</th>
-                    {{-- <th scope="col">Attend</th> --}}
-                    <th scope="col">Attended Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @foreach ($data as $item)
-                  <tr>
-                    <th scope="row">{{ $item->id }}</th>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->role }}</td>
-                    <td>{{ $item->company_name }}</td>
-                    {{-- <td></td> --}}
-                    <td>{{ $item->created_at->format('Y-m-d h:i:s A') }}</td>
-                  </tr>
-                  @endforeach
-                </tbody>
-              </table>
+            <div class="mb-3">
+                <a href="{{ route('firstDay') }}">
+                    <button class="btn btn-outline-danger">Day 1</button>
+                </a>
+                <a href="{{ route('secondDay') }}">
+                    <button class="btn btn-outline-danger">Day 2</button>
+                </a>
+            </div>
+            @yield('dayTable')
         </div>
     </div>
 </div>

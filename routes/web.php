@@ -25,6 +25,9 @@ Route::post('generateQr', [QrCodeController::class, 'generateQr'])->name('genera
 Route::get('scanner', [ScannerController::class, 'scannerPage'])->name('scannerPage');
 Route::post('scanner', [ScannerController::class, 'scan'])->name('scan');
 
+Route::get('scanner/firstDay', [ScannerController::class, 'firstDayPage'])->name('firstDay');
+Route::get('scanner/secondDay', [ScannerController::class, 'secondDayPage'])->name('secondDay');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
