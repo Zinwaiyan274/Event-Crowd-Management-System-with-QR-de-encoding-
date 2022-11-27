@@ -43,7 +43,7 @@ class ScannerController extends Controller
 
         $role = Attendee::select('role')->get();
 
-        if($date->isSameDay("2022-11-27")){
+        if($date->isSameDay("2022-12-24")){
             FirstDayScan::create($qrData);
         } elseif($date->isSameDay("2022-12-25")){
             SecondDayScan::create($qrData);
