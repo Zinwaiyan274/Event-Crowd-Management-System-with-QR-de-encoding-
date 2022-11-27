@@ -28,6 +28,9 @@ Route::post('scanner', [ScannerController::class, 'scan'])->name('scan');
 Route::get('scanner/firstDay', [ScannerController::class, 'firstDayPage'])->name('firstDay');
 Route::get('scanner/secondDay', [ScannerController::class, 'secondDayPage'])->name('secondDay');
 
+Route::post('scanner/firstDay/csv', [ScannerController::class, 'firstDayCSV'])->name('firstDayCSV');
+Route::post('scanner/secondDay/csv', [ScannerController::class, 'secondDayCSV'])->name('secondDayCSV');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
