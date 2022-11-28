@@ -41,13 +41,15 @@ class ScannerController extends Controller
         $qrData = $this->getText($request);
         $date = Carbon::now();
 
-        $role = Attendee::select('role')->get();
-
         if($date->isSameDay("2022-12-24")){
             FirstDayScan::create($qrData);
+            Attendee::select('randomNum')->where('randomNum', $qrData)->update(['firstDayScan'=>1]);
         } elseif($date->isSameDay("2022-12-25")){
             SecondDayScan::create($qrData);
+            Attendee::select('randomNum')->where('randomNum', $qrData)->update(['secondDayScan'=>1]);
         }
+
+
 
         return back();
     }

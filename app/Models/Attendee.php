@@ -15,7 +15,7 @@ class Attendee extends Model
         'company_name',
         'qr',
         'randomNum',
-        // 'attend',
-        // 'attended_time'
+        'firstDayScan',
+        'secondDayScan'
     ];
 }
