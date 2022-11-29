@@ -35,6 +35,9 @@
                     <li class="nav-item">
                         <a class="nav-link fs-3 " aria-current="page" href="{{ route('scannerPage') }}">Scan</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-3 " aria-current="page" href="{{ route('detail') }}">Detail</a>
+                    </li>
                 </ul>
             <!-- Left links -->
             </div>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\ScannerController;
 
@@ -30,6 +31,19 @@ Route::get('scanner/secondDay', [ScannerController::class, 'secondDayPage'])->na
 
 Route::post('scanner/firstDay/csv', [ScannerController::class, 'firstDayCSV'])->name('firstDayCSV');
 Route::post('scanner/secondDay/csv', [ScannerController::class, 'secondDayCSV'])->name('secondDayCSV');
+
+Route::get('detail',[DetailController::class,'detail'])->name('detail');
+Route::get('detail/firstDay',[DetailController::class,'firstDayDetail'])->name('firstDayDetail');
+Route::get('detail/secondDay',[DetailController::class,'secondDayDetail'])->name('secondDayDetail');
+
+// filter by company name
+Route::get('/filter/company',[DetailController::class,'filterByCompany'])->name('filterByCompany');
+
+// filter by role
+Route::get('/filter/role',[DetailController::class,'filterByRole'])->name('filterByRole');
+
+//filter by attend
+Route::get('filter/attend',[DetailController::class,'filterByAttend'])->name('filterByAttend');
 
 Auth::routes();
 

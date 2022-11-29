@@ -49,8 +49,6 @@ class ScannerController extends Controller
             Attendee::select('randomNum')->where('randomNum', $qrData)->update(['secondDayScan'=>1]);
         }
 
-
-
         return back();
     }
 
