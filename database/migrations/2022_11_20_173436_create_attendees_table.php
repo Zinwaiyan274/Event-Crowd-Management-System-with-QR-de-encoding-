@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('company_name')->nullable();
             $table->string('qr');
             $table->string('randomNum');
+            $table->boolean('firstDayScan')->default(false);
+            $table->boolean('secondDayScan')->default(false);
             $table->timestamps();
         });
     }

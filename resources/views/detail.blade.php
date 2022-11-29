@@ -47,7 +47,7 @@
                     <select name="filter" id="filter" class="form-control" onchange="filterByCompany()">
                         <option value="">Select Company.....</option>
                         @foreach ($detail as $d)
-                        <option value="{{ $d->company_name }}">{{ $d->company_name }}</option>
+                            <option value="{{ $d->company_name }}">{{ $d->company_name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -61,10 +61,19 @@
                 </div>
 
                 <div class="col-3 ">
+                    <select name="filter_attend" id="filter_attend" class="form-control" onchange="filterByAttend()">
+                        <option value="">Select Attend or Not Attend.....</option>
+                        <option value="attend">Attend</option>
+                        <option value="not_attend">Not Attend</option>
+                    </select>
+                </div>
+
+                <div class="col-3 ">
                     <form action="{{ route('detail') }}" method="GET">
                         @csrf
                         <div class="d-flex">
-                            <input type="text" name="search" id="" class="form-control" placeholder="Search Data...">
+                            <input type="text" name="search" id="" class="form-control"
+                                placeholder="Search Data...">
                             <button type="submit" class="btn btn-sm bg-dark text-white">Search</button>
                         </div>
                     </form>
@@ -75,27 +84,25 @@
             {{-- data table --}}
             <table class="table table-striped mt-3 text-center mb-5">
                 <thead>
-                  <tr>
-                    <th scope="col">Name</th>
-                    <th scope="col">Company Name</th>
-                    <th scope="col">Role</th>
-                    <th scope="col">Attend Time</th>
-                  </tr>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Company Name</th>
+                        <th scope="col">Role</th>
+                    </tr>
                 </thead>
                 <tbody id='filteredData'>
                     @foreach ($detail as $data)
-                    <tr>
-                        <th scope="row">{{ $data->name }}</th>
-                        <td>{{ $data->company_name }}</td>
-                        <td>{{ $data->role }}</td>
-                        <td>{{ $data->created_at->format('F-j-Y') }}</td>
-                    </tr>
+                        <tr>
+                            <th scope="row">{{ $data->name }}</th>
+                            <td>{{ $data->company_name }}</td>
+                            <td>{{ $data->role }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
-              </table>
-              <div>
+            </table>
+            <div>
                 {{ $detail->appends(request()->query())->links() }}
-              </div>
+            </div>
             {{-- end data table --}}
         </div>
     </section>
@@ -104,87 +111,140 @@
 @section('js')
     <script>
         // filter by company name
-        function filterByCompany(){
+        function filterByCompany() {
             let filter = document.getElementById('filter').value;
             $.ajax({
                 url: '/filter/company',
                 type: 'get',
-                data: {'filter': filter},
+                data: {
+                    'filter': filter
+                },
                 dataType: 'json',
-                success: function(response){
+                success: function(response) {
                     let detail = response.filter_data.data;
-                        let list = '';
-                        let count = '';
-                        for($i=0; $i<detail.length; $i++){
+                    let list = '';
+                    let count = '';
+                    for ($i = 0; $i < detail.length; $i++) {
 
-                            //  Change Date Format
-                        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                        $db_date = detail[$i].created_at
-                        $date = new Date($db_date);
-                        $new_date = $months[$date.getMonth()] +"-"+ $date.getDate() +"-"+ $date.getFullYear();
-
-                            list += `
+                        list += `
                             <tr>
                             <th scope="row">${detail[$i].name}</th>
                             <td>${detail[$i].company_name}</td>
                             <td>${detail[$i].role}</td>
-                            <td>${$new_date}</td>
                             </tr>
                             `;
 
-                            count = `
+                        count = `
                             <span>${response.filter_people}</span>
                             <span class="symbol">/</span>
                             <span class="bottom">${response.total_people}</span>
                             `
+                    }
+                    document.getElementById('filteredData').innerHTML = list;
+                    document.getElementById('total_count').innerHTML = count;
                 }
-                document.getElementById('filteredData').innerHTML = list ;
-                document.getElementById('total_count').innerHTML = count ;
-            }
 
             })
         }
 
         // filter by role
-        function filterByRole(){
+        function filterByRole() {
             let filter_role = document.getElementById('filter_role').value;
             $.ajax({
                 url: '/filter/role',
                 type: 'get',
-                data: {'filter_role': filter_role},
+                data: {
+                    'filter_role': filter_role
+                },
                 dataType: 'json',
-                success: function(response){
+                success: function(response) {
                     let detail = response.filter_data.data;
-                        let list = '';
-                        let count = '';
+                    let list = '';
+                    let count = '';
 
-                        for($i=0; $i<detail.length; $i++){
+                    for ($i = 0; $i < detail.length; $i++) {
 
-                            //  Change Date Format
-                        $months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-                        $db_date = detail[$i].created_at
-                        $date = new Date($db_date);
-                        $new_date = $months[$date.getMonth()] +"-"+ $date.getDate() +"-"+ $date.getFullYear();
-
-                            list += `
+                        list += `
                             <tr>
                             <th scope="row">${detail[$i].name}</th>
                             <td>${detail[$i].company_name}</td>
                             <td>${detail[$i].role}</td>
-                            <td>${$new_date}</td>
                             </tr>
                             `;
 
-                            count = `
+                        count = `
                             <span>${response.people}</span>
                             <span class="symbol">/</span>
                             <span class="bottom">${response.total_people}</span>`;
 
+                    }
+                    document.getElementById('filteredData').innerHTML = list;
+                    document.getElementById('total_count').innerHTML = count;
                 }
-                document.getElementById('filteredData').innerHTML = list ;
-                document.getElementById('total_count').innerHTML = count ;
-            }
 
+            })
+        }
+
+        // filter by all day attend or not
+        function filterByAttend() {
+            let filter_attend = document.getElementById('filter_attend').value;
+            $.ajax({
+                url: '/filter/attend',
+                type: 'get',
+                data: {
+                    'filter_attend': filter_attend
+                },
+                dataType: 'json',
+                success: function(response) {
+                    {
+                        let list = '';
+                        let count = '';
+                        let detail = response.filter_attend.data;
+
+                        //append data for  attend
+                        if (filter_attend == 'attend') {
+                            for ($i = 0; $i < detail.length; $i++) {
+
+                                list += `
+                                    <tr>
+                                        <th scope="row">${detail[$i].name}</th>
+                                        <td>${detail[$i].company_name}</td>
+                                        <td>${detail[$i].role}</td>
+                                    </tr>`;
+
+                                count = `
+                                    <span>${response.attend_people}</span>
+                                    <span class="symbol">/</span>
+                                    <span class="bottom">${response.total_people}</span>`;
+
+                            }
+                            document.getElementById('filteredData').innerHTML = list;
+                            document.getElementById('total_count').innerHTML = count;
+                        }
+                        //apend data for not attend
+                        else{
+
+                            for ($i = 0; $i < detail.length; $i++) {
+
+                                list += `
+                                        <tr>
+                                            <th scope="row">${detail[$i].name}</th>
+                                            <td>${detail[$i].company_name}</td>
+                                            <td>${detail[$i].role}</td>
+                                        </tr>`;
+
+                                count = `
+                                        <span>${response.not_attend_people}</span>
+                                        <span class="symbol">/</span>
+                                        <span class="bottom">${response.total_people}</span>`;
+
+                            }
+                            document.getElementById('filteredData').innerHTML = list;
+                            document.getElementById('total_count').innerHTML = count;
+                        }
+
+                    }
+                }
             })
         }
     </script>

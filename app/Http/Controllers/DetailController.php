@@ -10,12 +10,12 @@ use App\Models\SecondDayScan;
 class DetailController extends Controller
 {
     public function detail(){
-        $detail = Attendee::when(request('search'),function($query){
-            $query->where('name','like','%'.request('search').'%')
-                  ->orWhere('role','like','%'.request('search').'%')
-                  ->orWhere('company_name','like','%'.request('search').'%');
-            })
-            ->simplePaginate(10);
+            $detail =   Attendee::when(request('search'),function($query){
+                $query->where('name','like','%'.request('search').'%')
+                    ->orWhere('role','like','%'.request('search').'%')
+                    ->orWhere('company_name','like','%'.request('search').'%');
+                })
+                ->simplePaginate(10);
 
         $total_people = Attendee::count();
         $first_people = FirstDayScan::count();
@@ -23,14 +23,14 @@ class DetailController extends Controller
         return view('detail',['detail' => $detail, 'total_people' => $total_people, 'first_people' => $first_people]);
     }
 
+
     public function firstDayDetail(){
         $firstDayData = Attendee::when(request('search'),function($query){
                         $query->where('name','like','%'.request('search').'%')
                               ->orWhere('role','like','%'.request('search').'%')
                               ->orWhere('company_name','like','%'.request('search').'%');
                     })
-                    ->select('first_day_scans.randomNum', 'first_day_scans.created_at','attendees.id', 'attendees.name', 'attendees.role', 'attendees.company_name')
-                    ->join('first_day_scans', 'attendees.randomNum', 'first_day_scans.randomNum')
+                    ->where('firstDayScan',1)
                     ->simplePaginate(10);
         $total_people = Attendee::count();
         $first_people = FirstDayScan::count();
@@ -44,8 +44,7 @@ class DetailController extends Controller
                               ->orWhere('role','like','%'.request('search').'%')
                               ->orWhere('company_name','like','%'.request('search').'%');
                     })
-                    ->select('second_day_scans.randomNum', 'second_day_scans.created_at','attendees.id', 'attendees.name', 'attendees.role', 'attendees.company_name')
-                    ->join('second_day_scans', 'attendees.randomNum', 'second_day_scans.randomNum')
+                    ->where('secondDayScan',1)
                     ->simplePaginate(10);
         $total_people = Attendee::count();
         $first_people = SecondDayScan::count();
@@ -149,4 +148,38 @@ class DetailController extends Controller
             'people' => $people
         ]);
     }
-}
+
+    //filter by attend or not
+    public function filterByAttend(Request $request){
+
+        if($request->filter_attend == 'attend'){
+            $filter_attend_data = Attendee::where('firstDayScan',1)
+                                ->where('secondDayScan',1)
+                                ->simplePaginate(10);
+        }else{
+            $filter_attend_data = Attendee::where('firstDayScan',0)
+                                    ->where('secondDayScan',0)
+                                    ->simplePaginate(10);
+        }
+
+        $total_people = Attendee::count();
+
+        $attend_people = Attendee::where('firstDayScan',1)
+                                ->where('secondDayScan',1)
+                                ->count();
+
+        $not_attend_people = Attendee::where('firstDayScan',0)
+                        ->where('secondDayScan',0)
+                        ->count();
+
+
+        return response()->json([
+            'filter_attend' => $filter_attend_data,
+            'attend_people' => $attend_people,
+            'not_attend_people'=> $not_attend_people,
+            'total_people' => $total_people
+        ]);
+    }
+
+    }
+

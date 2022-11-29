@@ -1,6 +1,11 @@
 @extends('qr_scan')
 
 @section('dayTable')
+<form action="{{ route('firstDayCSV') }}" method="POST">
+    @csrf
+    <button class="btn btn-outline-danger mb-3" type="submit">Download CSV</button>
+</form>
+
 <table class="table table-success table-striped">
     <thead>
       <tr>

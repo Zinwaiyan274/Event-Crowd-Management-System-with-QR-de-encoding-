@@ -42,13 +42,69 @@ class ScannerController extends Controller
 
         $role = Attendee::select('role')->get();
 
-        if($date->isSameDay("2022-11-26")){
+        if($date->isSameDay("2022-11-29")){
             FirstDayScan::create($qrData);
-        } elseif($date->isSameDay("2022-11-27")){
+            Attendee::select('randomNum')->where('randomNum', $qrData)->update(['firstDayScan'=>1]);
+        } elseif($date->isSameDay("2022-11-30")){
             SecondDayScan::create($qrData);
+            Attendee::select('randomNum')->where('randomNum', $qrData)->update(['secondDayScan'=>1]);
         }
 
         return back();
+    }
+
+    // csv download (first-day)
+    public function firstDayCSV(){
+        $firstDayData = Attendee::select('attendees.id', 'attendees.name', 'attendees.role', 'attendees.company_name', 'first_day_scans.*')
+                ->join('first_day_scans', 'attendees.randomNum', 'first_day_scans.randomNum')
+                ->get();
+
+        $csvExporter = new \Laracsv\Export();
+
+        $csvExporter->build($firstDayData, [
+            'id' => 'Id',
+            'name' => 'Name',
+            'role' => 'Role(Title)',
+            'company_name' => 'Company Name',
+            'created_at' => 'Scanned Time',
+        ]);
+
+        $csvReader = $csvExporter->getReader();
+
+        $csvReader->setOutputBOM(\League\Csv\Reader::BOM_UTF8);
+
+        $filename = 'attenededList_firstDay.csv';
+
+        return response((string) $csvReader)
+            ->header('Content-Type', 'text/csv; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
+    }
+
+    // csv download (second-day)
+    public function secondDayCSV(){
+        $secondDayData = Attendee::select('attendees.id', 'attendees.name', 'attendees.role', 'attendees.company_name', 'second_day_scans.*')
+                ->join('second_day_scans', 'attendees.randomNum', 'second_day_scans.randomNum')
+                ->get();
+
+        $csvExporter = new \Laracsv\Export();
+
+        $csvExporter->build($secondDayData, [
+            'id' => 'Id',
+            'name' => 'Name',
+            'role' => 'Role(Title)',
+            'company_name' => 'Company Name',
+            'created_at' => 'Scanned Time',
+        ]);
+
+        $csvReader = $csvExporter->getReader();
+
+        $csvReader->setOutputBOM(\League\Csv\Reader::BOM_UTF8);
+
+        $filename = 'attenededList_secondDay.csv';
+
+        return response((string) $csvReader)
+            ->header('Content-Type', 'text/csv; charset=UTF-8')
+            ->header('Content-Disposition', 'attachment; filename="' . $filename . '"');
     }
 
     // get text from qr code
